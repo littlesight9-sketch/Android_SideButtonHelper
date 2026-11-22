@@ -36,6 +36,14 @@ Built out of necessity: when a phone's physical side buttons stop working, you l
 
 ---
 
+## 📦 Prebuilt APK
+
+A ready-to-install build lives at [`apk/SideButtonHelper-debug.apk`](apk/SideButtonHelper-debug.apk). Copy it to the phone, allow "Install unknown apps" for your file manager, and open it. It is a debug-signed build, so Android will not install it over a Play Store version of the app.
+
+To build it yourself instead: `./gradlew :app:assembleDebug`, output in `app/build/outputs/apk/debug/`.
+
+---
+
 ## 📱 Tested device notes
 
 Built and tuned on a **realme C21Y** (Android 11 Go Edition, realme UI 2.0 Go). Because realme UI pauses background apps aggressively, tick these once after setup:
