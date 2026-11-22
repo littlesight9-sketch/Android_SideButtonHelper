@@ -38,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
         binding.seekBarShakeSensitivity.setProgress(seekProgress);
         updateShakeLabel(threshold);
 
+        binding.switchTapWake.setChecked(SettingsPrefs.isTapWakeEnabled(this));
         binding.switchHomeScreenOnly.setChecked(SettingsPrefs.isHomeScreenOnly(this));
         binding.switchExcludeCalls.setChecked(SettingsPrefs.isExcludeDuringCalls(this));
         binding.switchExcludeCamera.setChecked(SettingsPrefs.isExcludeCamera(this));
@@ -69,6 +70,9 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
+
+        binding.switchTapWake.setOnCheckedChangeListener((btn, checked) ->
+                SettingsPrefs.setTapWakeEnabled(this, checked));
 
         binding.switchHomeScreenOnly.setOnCheckedChangeListener((btn, checked) ->
                 SettingsPrefs.setHomeScreenOnly(this, checked));

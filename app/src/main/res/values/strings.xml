@@ -11,12 +11,16 @@
     <string name="status_accessibility_needs_setup">Tap-to-lock: Needs setup</string>
     <string name="status_overlay_granted">Overlay permission: Granted</string>
     <string name="status_overlay_needs_setup">Overlay permission: Needs setup</string>
+    <string name="status_background_allowed">Background running: Allowed</string>
+    <string name="status_background_restricted">Background running: Restricted (may stop when idle)</string>
+    <string name="btn_allow_background">Allow Background Running</string>
 
     <!-- SettingsActivity -->
     <string name="settings_tap_count_title">Tap count to lock screen</string>
     <string name="tap_count_2">2 taps</string>
     <string name="tap_count_3">3 taps</string>
-    <string name="shake_sensitivity_label">Shake sensitivity (%1$.1f)</string>
+    <string name="shake_sensitivity_label">Gesture sensitivity — shake + double tap (%1$.1f)</string>
+    <string name="settings_tap_wake">Double tap the phone to wake the screen</string>
     <string name="settings_home_screen_only">Only detect taps on home/lock screen</string>
     <string name="settings_exclude_calls">Disable gesture during calls</string>
     <string name="settings_exclude_camera">Disable gesture while camera is open</string>
@@ -42,6 +46,7 @@
 
     <!-- OemGuidanceActivity -->
     <string name="oem_detected_device">Detected device: %1$s %2$s</string>
+    <string name="oem_instructions_realme">realme UI stops background apps when the screen is off. Tap below and turn on Auto-start for this app, then open Settings → Battery → App Battery Management → SideButtonHelper and choose \'Allow background activity\'.</string>
     <string name="oem_instructions_xiaomi">MIUI stops background apps aggressively. Tap below, then enable autostart for this app.</string>
     <string name="oem_instructions_oppo">ColorOS restricts background apps. Tap below, then allow this app to run in the background.</string>
     <string name="oem_instructions_vivo">Funtouch OS restricts background apps. Tap below, then enable background/autostart access.</string>

@@ -1,11 +1,15 @@
 package com.example.sidebuttonhelper;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.provider.Settings;
+import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +20,7 @@ import com.example.sidebuttonhelper.service.ShakeWakeService;
 import com.example.sidebuttonhelper.service.TapAccessibilityService;
 import com.example.sidebuttonhelper.settings.SettingsActivity;
 import com.example.sidebuttonhelper.settings.SettingsPrefs;
+import com.example.sidebuttonhelper.ui.OemGuidanceActivity;
 import com.example.sidebuttonhelper.volume.VolumeBubbleService;
 
 import java.util.List;
@@ -35,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
         binding.btnSettings.setOnClickListener(v ->
                 startActivity(new Intent(this, SettingsActivity.class)));
+
+        binding.btnBatteryExemption.setOnClickListener(v -> requestBatteryExemption());
+
+        binding.btnOemGuide.setOnClickListener(v ->
+                startActivity(new Intent(this, OemGuidanceActivity.class)));
 
         binding.switchMasterEnable.setChecked(SettingsPrefs.isHelperEnabled(this));
         binding.switchMasterEnable.setOnCheckedChangeListener((btn, isChecked) -> {
@@ -78,6 +88,36 @@ public class MainActivity extends AppCompatActivity {
                 accessibilityOn ? R.string.status_accessibility_ready : R.string.status_accessibility_needs_setup);
         binding.textOverlayStatus.setText(
                 overlayOn ? R.string.status_overlay_granted : R.string.status_overlay_needs_setup);
+
+        // realme UI / ColorOS stop the wake service unless the app is exempt from
+        // battery optimization - this is the single most common reason double-tap
+        // stops working after the phone has been idle for a while.
+        boolean backgroundAllowed = isIgnoringBatteryOptimizations();
+        binding.textBatteryStatus.setText(backgroundAllowed
+                ? R.string.status_background_allowed
+                : R.string.status_background_restricted);
+        binding.btnBatteryExemption.setVisibility(backgroundAllowed ? View.GONE : View.VISIBLE);
+    }
+
+    private boolean isIgnoringBatteryOptimizations() {
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        return pm != null && pm.isIgnoringBatteryOptimizations(getPackageName());
+    }
+
+    private void requestBatteryExemption() {
+        try {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            // Some OEM builds hide the direct dialog; fall back to the list screen.
+            try {
+                startActivity(new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS));
+            } catch (ActivityNotFoundException ignored) {
+                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:" + getPackageName())));
+            }
+        }
     }
 
     private boolean isAccessibilityServiceEnabled() {

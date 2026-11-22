@@ -11,7 +11,9 @@ Built out of necessity: when a phone's physical side buttons stop working, you l
 ### Screen Control
 - **Tap-to-sleep** — double or triple tap anywhere on the home/lock screen to lock the phone
 - **Shake-to-wake** — shake the phone to turn the screen back on, even while fully locked
+- **Double-tap-to-wake** — two quick taps on the phone body wake the screen while it's asleep
 - Configurable sensitivity for both gestures
+- Works with Doze and low-power sensors — the accelerometer is registered as a wake-up sensor with batching disabled, so taps are still seen after the screen has been off for a while
 
 ### Volume Control
 - **Floating volume bubble** — a small draggable on-screen button, always accessible, that expands into sliders for **Ring, Notification, Alarm, Media, and Call** volume
@@ -22,7 +24,8 @@ Built out of necessity: when a phone's physical side buttons stop working, you l
 ### Safety & Reliability
 - Gesture auto-disabled during calls and while the camera is open
 - Survives reboot and background app-killing (auto-restart watchdog)
-- Manufacturer-specific setup guidance for phones that restrict background apps (Xiaomi, Oppo, Vivo, Huawei, Asus)
+- Manufacturer-specific setup guidance for phones that restrict background apps (realme, Oppo, OnePlus, Xiaomi/Redmi/POCO, Vivo/iQOO, Huawei/Honor, Asus)
+- Home-screen status shows whether the app is allowed to keep running in the background, with a one-tap fix
 - Safe uninstall flow — cleanly revokes permissions before uninstalling
 
 ### Built for Real Use
@@ -30,6 +33,18 @@ Built out of necessity: when a phone's physical side buttons stop working, you l
 - English / Hindi language support
 - Simple, large-button home screen
 - Built-in test mode to try gestures safely before relying on them
+
+---
+
+## 📱 Tested device notes
+
+Built and tuned on a **realme C21Y** (Android 11 Go Edition, realme UI 2.0 Go). Because realme UI pauses background apps aggressively, tick these once after setup:
+
+1. **Auto-start** — home screen → *Background Setup Guide* → enable Auto-start for SideButtonHelper
+2. **Battery** — Settings → Battery → App Battery Management → SideButtonHelper → *Allow background activity*
+3. **Battery optimization** — home screen → *Allow Background Running* (status should read *Allowed*)
+
+With those set, double-tap and shake wake the screen from a fully off state. On Go-edition phones the first tap after a long idle may need to be a little firmer; use the gesture sensitivity slider in Advanced Settings to tune it.
 
 ---
 

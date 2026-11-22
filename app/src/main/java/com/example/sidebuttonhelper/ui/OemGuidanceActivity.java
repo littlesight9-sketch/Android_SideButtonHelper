@@ -16,6 +16,32 @@ import com.example.sidebuttonhelper.databinding.ActivityOemGuidanceBinding;
 
 public class OemGuidanceActivity extends AppCompatActivity {
 
+    // realme UI / ColorOS / OxygenOS are all ColorOS descendants and ship one of these
+    // startup managers, depending on version and region. First one that resolves wins.
+    private static final String[][] COLOROS_AUTOSTART = {
+            {"com.coloros.safecenter", "com.coloros.safecenter.permission.startup.StartupAppListActivity"},
+            {"com.oplus.safecenter", "com.oplus.safecenter.permission.startup.StartupAppListActivity"},
+            {"com.coloros.safecenter", "com.coloros.safecenter.startupapp.StartupAppListActivity"},
+            {"com.oplus.battery", "com.oplus.battery.ui.activity.PowerConsumeRankActivity"},
+    };
+
+    private static final String[][] XIAOMI_AUTOSTART = {
+            {"com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"},
+    };
+
+    private static final String[][] VIVO_AUTOSTART = {
+            {"com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"},
+            {"com.iqoo.secure", "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity"},
+    };
+
+    private static final String[][] HUAWEI_AUTOSTART = {
+            {"com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"},
+    };
+
+    private static final String[][] ASUS_AUTOSTART = {
+            {"com.asus.mobilemanager", "com.asus.mobilemanager.autostart.AutoStartActivity"},
+    };
+
     private ActivityOemGuidanceBinding binding;
 
     @Override
@@ -29,15 +55,19 @@ public class OemGuidanceActivity extends AppCompatActivity {
                 getString(R.string.oem_detected_device, Build.MANUFACTURER, Build.MODEL));
         binding.textInstructions.setText(instructionsFor(manufacturer));
 
-        binding.btnOpenAutostartSettings.setOnClickListener(v -> openAutostartSettings(manufacturer));
+        binding.btnOpenAutostartSettings.setOnClickListener(v -> openAutostartSettings());
     }
 
     private String instructionsFor(String manufacturer) {
-        if (manufacturer.contains("xiaomi")) {
+        if (manufacturer.contains("realme")) {
+            return getString(R.string.oem_instructions_realme);
+        } else if (manufacturer.contains("xiaomi") || manufacturer.contains("redmi")
+                || manufacturer.contains("poco")) {
             return getString(R.string.oem_instructions_xiaomi);
-        } else if (manufacturer.contains("oppo")) {
+        } else if (manufacturer.contains("oppo") || manufacturer.contains("oneplus")
+                || manufacturer.contains("oplus")) {
             return getString(R.string.oem_instructions_oppo);
-        } else if (manufacturer.contains("vivo")) {
+        } else if (manufacturer.contains("vivo") || manufacturer.contains("iqoo")) {
             return getString(R.string.oem_instructions_vivo);
         } else if (manufacturer.contains("huawei") || manufacturer.contains("honor")) {
             return getString(R.string.oem_instructions_huawei);
@@ -48,32 +78,39 @@ public class OemGuidanceActivity extends AppCompatActivity {
         }
     }
 
-    private void openAutostartSettings(String manufacturer) {
-        Intent intent = new Intent();
-        try {
-            if (manufacturer.contains("xiaomi")) {
-                intent.setComponent(new ComponentName("com.miui.securitycenter",
-                        "com.miui.permcenter.autostart.AutoStartManagementActivity"));
-            } else if (manufacturer.contains("oppo")) {
-                intent.setComponent(new ComponentName("com.coloros.safecenter",
-                        "com.coloros.safecenter.permission.startup.StartupAppListActivity"));
-            } else if (manufacturer.contains("vivo")) {
-                intent.setComponent(new ComponentName("com.vivo.permissionmanager",
-                        "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"));
-            } else if (manufacturer.contains("huawei") || manufacturer.contains("honor")) {
-                intent.setComponent(new ComponentName("com.huawei.systemmanager",
-                        "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-            } else if (manufacturer.contains("asus")) {
-                intent.setComponent(new ComponentName("com.asus.mobilemanager",
-                        "com.asus.mobilemanager.autostart.AutoStartActivity"));
-            } else {
-                openAppInfoFallback();
-                return;
-            }
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            openAppInfoFallback();
+    private String[][] candidatesFor(String manufacturer) {
+        if (manufacturer.contains("realme")) {
+            return COLOROS_AUTOSTART;
+        } else if (manufacturer.contains("xiaomi") || manufacturer.contains("redmi")
+                || manufacturer.contains("poco")) {
+            return XIAOMI_AUTOSTART;
+        } else if (manufacturer.contains("oppo") || manufacturer.contains("oneplus")
+                || manufacturer.contains("oplus")) {
+            return COLOROS_AUTOSTART;
+        } else if (manufacturer.contains("vivo") || manufacturer.contains("iqoo")) {
+            return VIVO_AUTOSTART;
+        } else if (manufacturer.contains("huawei") || manufacturer.contains("honor")) {
+            return HUAWEI_AUTOSTART;
+        } else if (manufacturer.contains("asus")) {
+            return ASUS_AUTOSTART;
         }
+        return new String[0][];
+    }
+
+    private void openAutostartSettings() {
+        String manufacturer = Build.MANUFACTURER.toLowerCase();
+        for (String[] candidate : candidatesFor(manufacturer)) {
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName(candidate[0], candidate[1]));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                startActivity(intent);
+                return;
+            } catch (ActivityNotFoundException | SecurityException e) {
+                // Try the next known screen; OEMs rename these between versions.
+            }
+        }
+        openAppInfoFallback();
     }
 
     private void openAppInfoFallback() {

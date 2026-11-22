@@ -14,6 +14,7 @@ public class SettingsPrefs {
     private static final String KEY_EXCLUDE_CALLS = "pref_exclude_during_calls";
     private static final String KEY_EXCLUDE_CAMERA = "pref_exclude_camera";
     private static final String KEY_LANGUAGE = "pref_app_language";
+    private static final String KEY_TAP_WAKE = "pref_tap_wake_enabled";
 
     private static final String KEY_STREAM_RING = "pref_bubble_enabled_streams_ring";
     private static final String KEY_STREAM_NOTIFICATION = "pref_bubble_enabled_streams_notification";
@@ -71,6 +72,14 @@ public class SettingsPrefs {
 
     public static void setExcludeCamera(Context context, boolean value) {
         prefs(context).edit().putBoolean(KEY_EXCLUDE_CAMERA, value).apply();
+    }
+
+    public static boolean isTapWakeEnabled(Context context) {
+        return prefs(context).getBoolean(KEY_TAP_WAKE, true);
+    }
+
+    public static void setTapWakeEnabled(Context context, boolean value) {
+        prefs(context).edit().putBoolean(KEY_TAP_WAKE, value).apply();
     }
 
     public static String getLanguage(Context context) {

@@ -10,12 +10,16 @@
     <string name="status_accessibility_needs_setup">टैप-टू-लॉक: सेटअप ज़रूरी</string>
     <string name="status_overlay_granted">ओवरले अनुमति: दी गई</string>
     <string name="status_overlay_needs_setup">ओवरले अनुमति: सेटअप ज़रूरी</string>
+    <string name="status_background_allowed">बैकग्राउंड में चलना: अनुमति है</string>
+    <string name="status_background_restricted">बैकग्राउंड में चलना: प्रतिबंधित (आइडल होने पर रुक सकता है)</string>
+    <string name="btn_allow_background">बैकग्राउंड में चलने दें</string>
 
     <!-- SettingsActivity -->
     <string name="settings_tap_count_title">स्क्रीन लॉक करने के लिए टैप संख्या</string>
     <string name="tap_count_2">2 टैप</string>
     <string name="tap_count_3">3 टैप</string>
-    <string name="shake_sensitivity_label">शेक संवेदनशीलता (%1$.1f)</string>
+    <string name="shake_sensitivity_label">जेस्चर संवेदनशीलता — शेक + डबल टैप (%1$.1f)</string>
+    <string name="settings_tap_wake">स्क्रीन जगाने के लिए फोन पर दो बार टैप करें</string>
     <string name="settings_home_screen_only">केवल होम/लॉक स्क्रीन पर टैप पहचानें</string>
     <string name="settings_exclude_calls">कॉल के दौरान जेस्चर बंद रखें</string>
     <string name="settings_exclude_camera">कैमरा खुला होने पर जेस्चर बंद रखें</string>
@@ -39,6 +43,7 @@
 
     <!-- OemGuidanceActivity -->
     <string name="oem_detected_device">पहचाना गया डिवाइस: %1$s %2$s</string>
+    <string name="oem_instructions_realme">realme UI स्क्रीन बंद होने पर बैकग्राउंड ऐप्स रोक देता है। नीचे टैप करके इस ऐप के लिए ऑटो-स्टार्ट चालू करें, फिर सेटिंग्स → बैटरी → ऐप बैटरी प्रबंधन → SideButtonHelper में \'बैकग्राउंड गतिविधि की अनुमति दें\' चुनें।</string>
     <string name="oem_instructions_xiaomi">MIUI बैकग्राउंड ऐप्स को सख्ती से रोकता है। नीचे टैप करें, फिर इस ऐप के लिए ऑटोस्टार्ट चालू करें।</string>
     <string name="oem_instructions_oppo">ColorOS बैकग्राउंड ऐप्स को सीमित करता है। नीचे टैप करें, फिर इस ऐप को बैकग्राउंड में चलने दें।</string>
     <string name="oem_instructions_vivo">Funtouch OS बैकग्राउंड ऐप्स को सीमित करता है। नीचे टैप करें, फिर बैकग्राउंड/ऑटोस्टार्ट एक्सेस चालू करें।</string>
